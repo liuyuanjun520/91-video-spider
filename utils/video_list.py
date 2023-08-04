@@ -62,11 +62,13 @@ class VideoListObj:
                 temp_href = item.find('a')['href']
                 temp_title = item.find('div', class_='img')['title']
                 temp_duration = item.find(class_='layer').text
+                background = item.find('div', class_='img')['style']
 
                 final_list.append({
                     'href': temp_href,
                     'title': temp_title,
-                    'duration': temp_duration
+                    'duration': temp_duration,
+                    'background': background.split('url(')[1].split(')')[0]
                 })
 
             except Exception as e:
@@ -97,9 +99,9 @@ class VideoListObj:
     def save_json(self, data):
         """保存list数据为json"""
 
-        file_name = 'demo.json'
+        file_name = '../demo_1.json'
         with open(file_name, "w") as json_file:
-            json.dump(data, json_file, indent=4)
+            json.dump(data, json_file, indent=4, ensure_ascii=False)
 
     def main_run(self, authority):
         page = 1
@@ -114,15 +116,21 @@ class VideoListObj:
             all_video_list.extend(page_one_list)
             print(f'max:{page_info.get("max_page", 1)}')
 
-            # 循环获取
-            while page_info.get("max_page", 1) > page:
-                page += 1
+            # 展示第一页数据
+            for item in page_one_list:
+                print(f'title:{item.get("title", "no title")}**[{item.get("duration", "no dura")}]')
+                temp_link = 'https://' + authority + item.get('href', '')
+                print(f'link:{temp_link}')
 
-                html_text = self.get_list_html(authority, page)
-                item_list = self.parse_list_html(html_text)
-                all_video_list.extend(item_list)
-                print(f'finished:{page}, max:{page_info.get("max_page", 1)}')
-                time.sleep(sleep_delay)
+            # 循环获取
+            # while page_info.get("max_page", 1) > page:
+            #     page += 1
+            #
+            #     html_text = self.get_list_html(authority, page)
+            #     item_list = self.parse_list_html(html_text)
+            #     all_video_list.extend(item_list)
+            #     print(f'finished:{page}, max:{page_info.get("max_page", 1)}')
+            #     time.sleep(sleep_delay)
 
             # 存储
             self.save_json(all_video_list)

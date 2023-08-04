@@ -7,18 +7,17 @@
 @time: 2023/7/26 19:02
 """
 import json
-import os
 import time
 import requests
 from bs4 import BeautifulSoup
-from m3u8_download import M3u8Download
+from utils.m3u8_download import M3u8Download
 
 
 class VideoDownload:
 
     def get_list(self):
         """获取视频列表"""
-        file_name = 'demo.json'
+        file_name = '../demo.json'
         with open(file_name, "r") as json_file:
             data_list = json.load(json_file)
 
@@ -52,14 +51,14 @@ class VideoDownload:
                 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
             }
 
-            response = requests.request("GET", url, headers=headers, data=payload)
+            response = requests.request("GET", url, headers=headers, data=payload, verify=False)
 
             if response.status_code < 300:
                 html_str = response.text
                 soup = BeautifulSoup(html_str, 'html.parser')
                 data_src = soup.find('video', id='video-play')['data-src']
                 data_src = data_src.replace('&amp;', '&')
-                print(data_src)
+                # print(data_src)
                 return data_src
 
             else:
