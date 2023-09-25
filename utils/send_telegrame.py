@@ -22,8 +22,8 @@ def send_photo_and_message(token, chat_id, message_text):
 
 def send_data(message_text):
     """发送图文消息到telegramd-机器人"""
-    telegram_token = ""  # 替换为你的Telegram Bot API令牌
-    chat_id = ""  # 替换为你的目标聊天ID
+    telegram_token = "6665078013:AAGwtzclniEnHnxkZQWtslC-_kgnFXN2csc"  # 替换为你的Telegram Bot API令牌
+    chat_id = "-905878649"  # 替换为你的目标聊天ID
     send_photo_and_message(telegram_token, chat_id, message_text)
 
 
